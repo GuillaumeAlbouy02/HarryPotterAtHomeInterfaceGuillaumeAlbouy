@@ -35,17 +35,19 @@ private @Getter boolean gameOver = false;
 
 public Game(Stage stage){
     this.stage=stage;
-    this.ds=new Display(stage);
+    this.ds=new Display(stage, this);
     this.sc = new SafeScanner(System.in, ds);
 }
+
+
 public void play(){
-    createPlayer();                                                 //The game begins with the character creation
 
-    level = sc.getInt2("level : ");                                 //You can access any level at the beginning of the game if you don't want to restart from the 1st level
 
-        while(level<8 && !gameOver){
+
+
+        if(level<8 && !gameOver){
         levelSelect();                                              //Level creation : depending on this.level value, it will initialise currentLevel (create a list of enemies and bosses) and the player's spells and potions
-        ds.displayLevelImage(level,"Intro", player.isEvil());
+
         int turn = 1;
         while(currentLevel.getCurrentEnemy()!=null && !gameOver) {
             specialRule(turn);
@@ -58,7 +60,7 @@ public void play(){
 
 
         if(currentLevel.getCurrentEnemy()==null){                   //End of the level
-            ds.displayLevel(level,"Outro", player.isEvil());
+            //ds.displayLevel(level,"Outro", player.isEvil());
             awardChoice();
             level++;
         }
@@ -123,42 +125,20 @@ public void play(){
 
 
 
-private void createPlayer(){
+public void createPlayer(){
+
     player = new Wizard();
-    player.setName(ds.getString("What is your name ?"));
+
 
     player.setPet(null);
-    ds.displayParagraph("Congratulation "+player.getName()+ " ! You've been accepted to Hogwarts School of Witchcraft and Wizardry !\n");
-    ds.displayParagraph("You must be excited to start the first year, but first you have to buy a pet and a wand in Diagon Alley");
-    ds.displayParagraph("Let's start with the pet, you can choose between an owl, a rat, a cat or a toad");
-
-    /*while (player.getPet()==null){
-        int choix = -1;
-        while(!(choix<5&&choix>0)){
-            choix = sc.getInt2("Enter 1 for owl, 2 for rat, 3 for cat or 4 for a toad");
-
-        }*/
-    int choix = ds.makeChoice("Choose a pet", 4);
-        player.setPet(Pet.values()[choix]);
 
 
-    ds.printText("So you chose an adorable "+ player.getPet().name()+"\n");
-    ds.printText("You must now go to Ollivander's to choose a wand, or, to be exact, to be chosen by a wand");
+
     player.setWand(new Wand(Core.values()[ThreadLocalRandom.current().nextInt(0,3)], ThreadLocalRandom.current().nextInt(9,15)));
-    ds.printText("You were chosen by a "+player.getWand().getSize() + " inches wand, with a " + player.getWand().getCore().name() + " core\n");
-    SortingHat.chooseHouse(player,sc, ds);
 
+
+    ds.dsCreatePlayer();
     //House bonus
-    if (player.getHouse()== House.SLYTHERIN){
-        player.setDamageMultiplier(1.5);
-    }
-    if(player.getHouse()==House.GRYFFINDOR){
-        player.setDefense(0.5f);
-    }
-    if(player.getHouse()==House.RAVENCLAW){
-        player.setPrecision(1.3f);
-    }
-
 
 
 }

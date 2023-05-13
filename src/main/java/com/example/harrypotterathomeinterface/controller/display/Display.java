@@ -1,5 +1,8 @@
 package com.example.harrypotterathomeinterface.controller.display;
 
+import com.example.harrypotterathomeinterface.controller.Characters.wizards.House;
+import com.example.harrypotterathomeinterface.controller.Characters.wizards.Pet;
+import com.example.harrypotterathomeinterface.controller.Game;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,14 +18,12 @@ import java.util.Scanner;
 
 public class Display {
     private Stage stage;
-    public Display(Stage stage){
+    private Game game;
+    public Display(Stage stage, Game game){
         this.stage=stage;
-        Button next =new Button("START");
-        VBox layout = new VBox();
-        layout.getChildren().add(next);
-        Scene scene = new Scene(layout, 1000,1000);
-        stage.setScene(scene);
-        stage.show();
+        this.game = game;
+
+
 
 
     }
@@ -30,33 +31,8 @@ public class Display {
         System.out.println(text);
     }
 
-    public void displayLevel(int level, String state, boolean isEvil) {
-        String fileName = "/" + String.valueOf(level) + state + "Text.txt";
-        if(isEvil) {
-            fileName = "/" + String.valueOf(level) + state + "TextEvil.txt";
-        }
-
-        Scanner fileSc = new Scanner(getClass().getResourceAsStream(fileName));
-        while (fileSc.hasNextLine()) {
-            System.out.println(fileSc.nextLine());
-        }
 
 
-    }
-    public void displayParagraph(String paragraph){
-        Text text = new Text();
-        text.setText(paragraph);
-        HBox layout = new HBox();
-        Button next = new Button("Next");
-        layout.getChildren().add(text);
-        layout.getChildren().add(next);
-        Scene scene = new Scene(layout);
-        stage.setScene(scene);
-
-
-
-
-    }
     public void displayLevelImage(int level,String state,boolean isEvil){
         String fileName = "/" + state+String.valueOf(level) + ".jpg";
         if(isEvil) {
@@ -71,38 +47,90 @@ public class Display {
 
     }
 
-    public String getString(String message){
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(message);
-        dialog.setHeaderText(message);
-        Optional<String>result = dialog.showAndWait();
-        while(true) {
-            if (result.isPresent() && !result.isEmpty()) {
-                return result.get();
+
+
+
+
+
+
+    public void dsCreatePlayer(){
+        VBox layout = new VBox();
+
+        //Name
+        Label nameLabel = new Label("Name :");
+        TextArea nameArea = new TextArea();
+        HBox nameBox = new HBox(nameLabel,nameArea);
+
+        //Pet
+        RadioButton owl = new RadioButton("Owl");
+        owl.setSelected(true);
+        RadioButton rat = new RadioButton("Rat");
+        RadioButton cat = new RadioButton("Cat");
+        RadioButton toad = new RadioButton("Toad");
+        ToggleGroup petGroup = new ToggleGroup();
+        owl.setToggleGroup(petGroup);
+        rat.setToggleGroup(petGroup);
+        cat.setToggleGroup(petGroup);
+        toad.setToggleGroup(petGroup);
+        HBox petBox = new HBox(owl,rat,cat,toad);
+
+        //Wand
+        Label wand = new Label("You were chosen by a "+game.getPlayer().getWand().getSize() + " inches wand, with a " + game.getPlayer().getWand().getCore().name() + " core");
+
+        //House
+        RadioButton gryffindor = new RadioButton("Gryffindor");
+        gryffindor.setSelected(true);
+        RadioButton ravenclaw = new RadioButton("RavenClaw");
+        RadioButton hufflepuff = new RadioButton("Hufflepuff");
+        RadioButton slytherin = new RadioButton("Slytherin");
+        ToggleGroup houseGroup = new ToggleGroup();
+        gryffindor.setToggleGroup(houseGroup);
+        ravenclaw.setToggleGroup(houseGroup);
+        hufflepuff.setToggleGroup(houseGroup);
+        slytherin.setToggleGroup(houseGroup);
+        HBox houseBox = new HBox(gryffindor,ravenclaw,hufflepuff,slytherin);
+
+        Button okButton = new Button("Create");
+        okButton.setOnAction(e->{
+            game.getPlayer().setName(nameArea.getText());
+            if (petGroup.getSelectedToggle()==owl){
+                game.getPlayer().setPet(Pet.OWL);
             }
-        }
-
-    }
-
-    public int makeChoice(String message, int numberOfChoices){
-        Dialog dialog = new Dialog<>();
-        dialog.setTitle(message);
-
-        VBox buttons = new VBox();
-        for(int i = 0;i<numberOfChoices;i++){
-            Button b = new Button(Integer.toString(i+1));
-            int finalI = i;
-            b.setOnMouseClicked((e)->{dialog.setResult(finalI);});
-            buttons.getChildren().add(b);
-        }
-        dialog.getDialogPane().getChildren().add(buttons);
-        Optional<Integer>result = dialog.showAndWait();
-        while(true) {
-            if (result.isPresent() && !result.isEmpty()) {
-                dialog.close();
-                return result.get();
+            else if(petGroup.getSelectedToggle()==rat){
+                game.getPlayer().setPet(Pet.RAT);
             }
-        }
+            else if(petGroup.getSelectedToggle()==cat){
+                game.getPlayer().setPet(Pet.CAT);
+            }
+            else{
+                game.getPlayer().setPet(Pet.TOAD);
+            }
+
+
+            if (houseGroup.getSelectedToggle()==gryffindor){
+                game.getPlayer().setHouse(House.GRYFFINDOR);
+                game.getPlayer().setDefense(0.5f);
+            }
+            else if(houseGroup.getSelectedToggle()==hufflepuff){
+                game.getPlayer().setHouse(House.HUFFLEPUFF);
+            }
+            else if(houseGroup.getSelectedToggle()==ravenclaw){
+                game.getPlayer().setHouse(House.RAVENCLAW);
+                game.getPlayer().setPrecision(1.3f);
+            }
+            else{
+                game.getPlayer().setHouse(House.SLYTHERIN);
+                game.getPlayer().setDamageMultiplier(1.5);
+            }
+
+            game.play();
+        });
+
+        layout.getChildren().addAll(nameBox,petBox,wand,houseBox, okButton);
+        Scene scene = new Scene(layout,700,700);
+        stage.setScene(scene);
+        stage.show();
+
 
     }
 }

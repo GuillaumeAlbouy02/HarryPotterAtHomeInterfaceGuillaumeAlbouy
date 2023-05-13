@@ -13,7 +13,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Game game = new Game(stage);
-        game.play();
+        game.createPlayer();
     }
 
     public static void main(String[] args) {
