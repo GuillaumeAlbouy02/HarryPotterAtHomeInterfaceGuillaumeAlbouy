@@ -23,12 +23,13 @@ public class Game {
 private @Getter @Setter Wizard player;
 private AbstractEnemy currentEnemy;
 
-private int level = 1;
+private @Getter int level = 1;
 
 private @Setter @Getter Level currentLevel;
 
 private Display ds;
 private SafeScanner sc;
+private @Getter @Setter int turn;
 
 
 private @Getter boolean gameOver = false;
@@ -37,6 +38,7 @@ public Game(Stage stage){
     this.stage=stage;
     this.ds=new Display(stage, this);
     this.sc = new SafeScanner(System.in, ds);
+    turn = 0;
 }
 
 
@@ -46,40 +48,37 @@ public void play(){
 
 
         if(level<8 && !gameOver){
-        levelSelect();                                              //Level creation : depending on this.level value, it will initialise currentLevel (create a list of enemies and bosses) and the player's spells and potions
+            if(turn ==0) {
+                levelSelect();//Level creation : depending on this.level value, it will initialise currentLevel (create a list of enemies and bosses) and the player's spells and potions
+                turn = 1;
+            }
 
-        int turn = 1;
-        while(currentLevel.getCurrentEnemy()!=null && !gameOver) {
+        if(currentLevel.getCurrentEnemy()!=null && !gameOver) {
             specialRule(turn);
             currentEnemy = currentLevel.getCurrentEnemy();
             playerMove();
 
-            endTurn();
-            turn++;
         }
 
 
         if(currentLevel.getCurrentEnemy()==null){                   //End of the level
             //ds.displayLevel(level,"Outro", player.isEvil());
-            awardChoice();
-            level++;
+            endTurn();
         }
 
         }
-        if (level==8){
-            ds.printText("Thank you for playing");
+        else if (level==8){
+            ds.alert("Thank you for playing");
+            ds.close();
         }
         else{
-            ds.printText("You were tragically killed trying to protect your friends :(");
+            ds.alert("You were tragically killed trying to protect your friends :(");
+            stage.close();
         }
     }
 
     public void awardChoice(){
-        int choice = 0;
-        while (choice==0 && level!=7) { //The choice interface loops while the player hasn't chosen one of the options.
-            ds.printText("\nYou cleared the level !\nYou can choose to: \n 1 - increase your health\n 2 - increase your damages");
-
-            choice = sc.getInt2("Press 1 for heath, or 2 for damage");
+        int choice = ds.endLevelChoice();
 
             if (choice == 2) {
                 player.setDamageMultiplier(player.getDamageMultiplier()+0.1);
@@ -93,13 +92,18 @@ public void play(){
                 choice = 0;
             }
         }
-    }
+
 
     public void endTurn(){
 
 
         currentEnemy= currentLevel.getCurrentEnemy(); //The enemy is refreshed, to avoid getting killed by an enemy you defeated with the previous move.
-
+        if(currentLevel.getCurrentEnemy()==null){                   //End of the level
+            //ds.displayLevel(level,"Outro", player.isEvil());
+            awardChoice();
+            level++;
+            turn=0;
+        }
         if (currentEnemy!=null &&currentEnemy.getHp() <= 0) { //If the enemy hp equals 0, it is set to null
             currentLevel.killCurrentEnemy(currentEnemy);
             currentEnemy = null;
@@ -113,8 +117,13 @@ public void play(){
         player.setDefend(0);
         if (player.getHp() <= 0) {
             gameOver = true;
-            ds.printText("Game Over");
+            ds.alert("Game Over");
+            ds.close();
         }
+        else{
+            play();
+        }
+
     }
 
 
@@ -176,12 +185,12 @@ public void specialRule(int turn){
             int healthPotions = player.getPotions()[0].getUseNumber();
 
             if(turn ==3 && player.getHouse().equals(House.GRYFFINDOR)){
-                ds.printText("You are slowly losing hope of ever defeating this beast, when you suddenly hear a bird's cry beahind you. You turn around, only to discover that :");
-                ds.printText("Dumbledore's phoenix, Fawkes, has brought you... GRYFFINDOR's SWORD ?!!?");
+                //ds.printText("You are slowly losing hope of ever defeating this beast, when you suddenly hear a bird's cry beahind you. You turn around, only to discover that :");
+                ds.alert("Dumbledore's phoenix, Fawkes, has brought you... GRYFFINDOR's SWORD ?!!?");
                 player.setPotions(new Potion[]{new Potion("health potion",0, healthPotions), new Potion("Godric Gryffindor's sword",1, 1)});
             } else if (turn == 5 && !player.getHouse().equals(House.GRYFFINDOR)){
-                ds.printText("You grow tired and you are losing hope, there's simply nothing you can do !");
-                ds.printText("You throw a rock at the basilisk out of hopelessness, and somehow manage to break one of its fang, which you quickly pick up as it would make a nice souvenir if you ever got out of here alive.");
+                //ds.printText("You grow tired and you are losing hope, there's simply nothing you can do !");
+                ds.alert("You throw a rock at the basilisk out of hopelessness, and somehow manage to break one of its fang, which you quickly pick up as it would make a nice souvenir if you ever got out of here alive.");
                 player.setPotions(new Potion[]{new Potion("health potion",0, healthPotions), new Potion("A basilisk fang",1, 1)});
 
 
@@ -212,7 +221,7 @@ public void specialRule(int turn){
             int healthPotion5 = player.getPotions()[0].getUseNumber();
 
             if(turn>ThreadLocalRandom.current().nextInt(3,7)){
-                ds.printText("you got fireworks");
+                ds.alert("you got fireworks from the Weasley twins !");
                 player.setPotions(new Potion[]{new Potion("Health potion", 0, healthPotion5), new Potion("Fireworks", 1, 1)});
             }
 
@@ -232,7 +241,7 @@ public void specialRule(int turn){
 public void playerMove(){
     //the player is asked which move he wants to make. The corresponding method is then called
     if(currentEnemy!=null) {
-        ds.printText("\n \nYou're facing a " + currentEnemy.getName() + " at " + currentEnemy.getHp() + " hp");
+        /*ds.printText("\n \nYou're facing a " + currentEnemy.getName() + " at " + currentEnemy.getHp() + " hp");
         ds.printText("You're at " + player.getHp() + " hp");
         int choice = 0;
         while (choice == 0) {
@@ -272,7 +281,8 @@ public void playerMove(){
             } else {
                 choice = 0;
             }
-        }
+        }*/
+        ds.playerTurn();
     }
 
 }

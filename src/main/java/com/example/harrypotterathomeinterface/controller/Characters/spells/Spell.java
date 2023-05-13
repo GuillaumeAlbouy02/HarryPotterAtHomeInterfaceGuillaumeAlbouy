@@ -27,7 +27,7 @@ public class Spell extends AbstractSpell{
         if (ThreadLocalRandom.current().nextInt(0,101)<=probability*player.getPrecision()) {
             switch (effect) {
                 case 0:
-                    ds.printText("You stand defenseless as your spell deals little to no damage to your foe");
+                    ds.alert("You stand defenseless as your spell deals little to no damage to your foe");
                     break;
                 case 1:
                     leviosa(target, ds);
@@ -45,7 +45,7 @@ public class Spell extends AbstractSpell{
 
         }
         else{
-            ds.printText("You fail to cast the spell !");
+            ds.alert("You fail to cast the spell !");
         }
     }
 
