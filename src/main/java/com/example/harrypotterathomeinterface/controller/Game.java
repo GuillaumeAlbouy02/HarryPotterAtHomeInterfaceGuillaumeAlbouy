@@ -300,7 +300,7 @@ enemies, bosses, available spells and items
     player.setKnownSpells(new Spell[]{new Spell("Alohomora", 100,0), new Spell("Reparo",100,0), new Spell("Wingardium Leviosa",75,1)});
 
 
-    currentLevel = new Level(null,bosses);
+    currentLevel = new Level(null,bosses,"Level 1 : The philosopher stone");
 
     }
     public void lev2(){
@@ -309,7 +309,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{new Spell("Alohomora", 1,0), new Spell("Reparo",1,0), new Spell("Wingardium Leviosa",50,0)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
 
-        currentLevel = new Level(null,bosses);
+        currentLevel = new Level(null,bosses,"Level 2 : The chamber of secrets");
 
     }
     public void lev3(){
@@ -322,7 +322,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{new Spell("Alohomora", 1,0), new Spell("Reparo",1,0), new Spell("Wingardium Leviosa",50,0), new Spell("Expecto Patronum", 75,2)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0,5)});
 
-        currentLevel = new Level(enemies,bosses);
+        currentLevel = new Level(enemies,bosses,"Level 3 : The prisoner of Azkaban");
 
     }
     public void lev4(){
@@ -333,7 +333,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{ new Spell("Wingardium Leviosa",50,0), new Spell("Expecto Patronum", 15,0), new Spell("Expelliarmus", 75,2), new Spell("Accio", 10, 3)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
 
-        currentLevel = new Level(enemies,bosses);
+        currentLevel = new Level(enemies,bosses,"Level 4 : The gobelet of fire");
 
     }
 
@@ -345,7 +345,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{ new Spell("Wingardium Leviosa",50,0), new Spell("Expecto Patronum", 15,0), new Spell("Expelliarmus", 75,2), new Spell("Accio", 10, 0)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
 
-        currentLevel = new Level(enemies,bosses);
+        currentLevel = new Level(enemies,bosses, "Level 5 : The Order of the phoenix");
 
     }
     public void lev6(){
@@ -364,7 +364,7 @@ enemies, bosses, available spells and items
                 player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
                 player.setEvil(true);
 
-                currentLevel = new Level(enemies, bosses);
+                currentLevel = new Level(enemies, bosses, "Level 6 : The half blood Prince");
             } else if (choice == 1) {
                 lev6Loy();
             } else {
@@ -382,7 +382,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{ new Spell("Wingardium Leviosa",50,0), new Spell("Expecto Patronum", 15,0), new Spell("Expelliarmus", 75,2), new Spell("Accio", 10, 0), new Spell("Sectumsempra", 75,4)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
 
-        currentLevel = new Level(enemies,bosses);
+        currentLevel = new Level(enemies,bosses, "Level 6 : The half blood prince");
     }
 
     public void lev7(){
@@ -395,7 +395,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{new Spell("Wingardium Leviosa", 50, 0), new Spell("Expecto Patronum", 15, 0), new Spell("Expelliarmus", 75, 2), new Spell("Accio", 10, 0), new Spell("Sectumsempra", 75, 4)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
 
-        currentLevel = new Level(enemies, bosses);
+        currentLevel = new Level(enemies, bosses, "Level 7 : The deathly Hallows");
     }
     else{
         Enemy[] enemies = new Enemy[]{new Enemy("Ron Weasley", 60, 5, 50), new Enemy("Hermione Granger", 60, 5, 50), new Enemy("Fred Weasley", 60, 5, 50), new Enemy("George Weasley", 60, 5, 50), new Enemy("Ginny Weasley", 60, 5, 50), new Enemy("Rubeus Hagrid", 60, 5, 50)};
@@ -403,7 +403,7 @@ enemies, bosses, available spells and items
         player.setKnownSpells(new Spell[]{new Spell("Wingardium Leviosa", 50, 0), new Spell("Expecto Patronum", 15, 0), new Spell("Expelliarmus", 75, 2), new Spell("Accio", 10, 0), new Spell("Sectumsempra", 75, 4), new Spell("Avada Kedavra", 75, 1)});
         player.setPotions(new Potion[]{new Potion("Health potion", 0, 5)});
 
-        currentLevel = new Level(enemies, null);
+        currentLevel = new Level(enemies, null,"Level 7 : The deathly Hallows");
 
     }
 

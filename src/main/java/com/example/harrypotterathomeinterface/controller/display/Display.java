@@ -58,7 +58,7 @@ public class Display {
 
         //Name
         Label nameLabel = new Label("Name :");
-        TextArea nameArea = new TextArea();
+        TextField nameArea = new TextField();
         HBox nameBox = new HBox(nameLabel,nameArea);
 
         //Pet
@@ -75,7 +75,7 @@ public class Display {
         HBox petBox = new HBox(owl,rat,cat,toad);
 
         //Wand
-        Label wand = new Label("You were chosen by a "+game.getPlayer().getWand().getSize() + " inches wand, with a " + game.getPlayer().getWand().getCore().name() + " core");
+        Label wand = new Label("\n\nYou were chosen by a "+game.getPlayer().getWand().getSize() + " inches wand, with a " + game.getPlayer().getWand().getCore().name() + " core\n\n\n");
 
         //House
         RadioButton gryffindor = new RadioButton("Gryffindor");
@@ -158,7 +158,7 @@ public class Display {
         VBox enemyBox = new VBox(levelLabel,turnLabel,enemyName,enemyHealth, enemiesNumber);
 
 
-        Label label4 = new Label("text");
+        Label label4 = new Label(game.getCurrentLevel().getLevelName());
 
         //Your stats
         Wizard player = game.getPlayer();

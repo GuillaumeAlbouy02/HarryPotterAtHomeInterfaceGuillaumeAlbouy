@@ -14,14 +14,16 @@ public class Level {
     @Setter Enemy[] enemies;
     private @Getter
     @Setter Boss[] bosses;
+    private @Getter @Setter String levelName;
 
     private @Getter boolean won;
 
 
-    public Level(Enemy[] enemies, Boss[] bosses) {
+    public Level(Enemy[] enemies, Boss[] bosses, String levelName) {
         this.enemies = enemies;
         this.bosses = bosses;
         this.won = false;
+        this.levelName=levelName;
 
     }
 
