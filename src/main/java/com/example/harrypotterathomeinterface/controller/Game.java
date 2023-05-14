@@ -28,7 +28,7 @@ private @Getter int level = 1;
 private @Setter @Getter Level currentLevel;
 
 private Display ds;
-private SafeScanner sc;
+
 private @Getter @Setter int turn;
 
 
@@ -37,7 +37,7 @@ private @Getter boolean gameOver = false;
 public Game(Stage stage){
     this.stage=stage;
     this.ds=new Display(stage, this);
-    this.sc = new SafeScanner(System.in, ds);
+
     turn = 0;
 }
 
@@ -354,7 +354,7 @@ enemies, bosses, available spells and items
                 "Will you stay loyal to your friends and Hogwarts, or will you side with the Dark Lord ?");
         int choice = 0;
         while (choice==0) {
-            choice = sc.getInt2("Press 1 to stay loyal, or 2 to side with the death eaters");
+            choice = ds.loyaltyChoice();
 
             if (choice == 2) {
                 Enemy[] enemies = new Enemy[]{new Enemy("Student", 60, 5, 50), new Enemy("Student", 60, 5, 50), new Enemy("Student", 60, 5, 50)};
