@@ -153,7 +153,7 @@ public class Display {
         if (game.getCurrentLevel().getEnemies()!=null){
             nbEnemies = game.getCurrentLevel().getEnemies().length;
         }
-        Label enemiesNumber = new Label("Number of enemy left : "+(nbBosses+nbEnemies));
+        Label enemiesNumber = new Label("Number of enemies  : "+(nbBosses+nbEnemies));
 
         VBox enemyBox = new VBox(levelLabel,turnLabel,enemyName,enemyHealth, enemiesNumber);
 
@@ -178,7 +178,7 @@ public class Display {
         buttons.add(itemButton,1,0);
         buttons.add(defendButton,0,1);
 
-        gridPane.setGridLinesVisible(true);
+        //gridPane.setGridLinesVisible(true);
         //gridPane.add(label2, 0,0,4,1);
         for(int c=0;c<3;c++){
             ColumnConstraints column = new ColumnConstraints(250);
@@ -210,7 +210,7 @@ public class Display {
                     game.setTurn(game.getTurn()+1);
                     game.endTurn();
                 });
-                buttons.add(newButton,i%3,i%2);
+                buttons.add(newButton,i%2,i%3);
             }
 
         });
